@@ -1,0 +1,12 @@
+Blazed Game
+
+com.chvanova.blazedport
+
+AppsFlyer - W9mYoWu9Q3unFmev7HQWWb
+OneSignal - 1623fed4-5b91-4130-a812-f7a5255f4051
+
+Branch - 
+key_live_jqfoKdzVjg8Ig4yyMwsxRpflFsd30F8K
+key_test_ntfcIbCTcjZLi5CCTtttUbepsEf1YtWW
+
+link
