@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Blazed Game</string>
+
+    <string name="rule_text">
+        The port is blazing with the amount of work\! \n\n
+        Control left and right by tapping on the edges of the screen. To reset the box - click on the bottom of the screen. After dropping a box, the turn passes to your opponent. Line up 4 boxes of your color in a row and prevent your opponent from doing this, and victory will be in your pocket\! \n\n
+        But don\'t forget the extraneous crates! They reset every 4 turns and can interfere with your strategy!But don\'t forget the extraneous crates\! They reset every 4 turns and can interfere with your strategy\!
+
+    </string>
 </resources>

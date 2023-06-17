@@ -16,21 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.chvanova.blazedport.R
-import androidx.compose.ui.unit.dp
 import com.chvanova.blazedport.presentation.ui.utils.AlertWin
 import com.chvanova.blazedport.presentation.ui.utils.GridSystemEl
 import com.chvanova.blazedport.presentation.ui.utils.RopeElement
 import com.chvanova.blazedport.presentation.view_models.GameZoneViewModel
 
 @Composable
-fun PVE_Screen(
+fun PVP_Screen(
     navController: NavController,
     gameZoneViewModel: GameZoneViewModel
 ) {
-
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.back_game),
@@ -39,58 +38,29 @@ fun PVE_Screen(
             contentScale = ContentScale.Crop,
         )
 
-        _PVE_Mode(navController = navController, gameZoneViewModel)
+        _PVP_Mode(navController = navController, gameZoneViewModel)
     }
-
 }
 
 @Composable
-private fun _PVE_Mode(
+private fun _PVP_Mode(
     navController: NavController,
     gameZoneViewModel: GameZoneViewModel
 ) {
     val context = LocalContext.current
     var isOpen by remember { mutableStateOf(false) }
-
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
         val (close_btn_ref, gameZone_ref, containerShow_ref) = createRefs()
 
-        GridSystemEl(
-            elements = gameZoneViewModel.gameContainerPVE,
-            modifier = Modifier.constrainAs(gameZone_ref) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom, margin = 40.dp)
-            },
-            onClickVertical = { colume ->
-                if (!gameZoneViewModel.isFinishGamePVE()) {
-                    gameZoneViewModel.addContainer(colume, gameZoneViewModel.currentColorContainer!!)
-                    gameZoneViewModel.currentColorContainer = gameZoneViewModel.generateRandomContainer()
-                    gameZoneViewModel.generateNeutralBox()
-                } else {
-
-                    if (gameZoneViewModel.userIsWin(true)) {
-                        Log.e("_PVP_Mode", "user is win: ", )
-                        isOpen = true
-                    } else {
-                        Log.e("_PVP_Mode", "user is lost: ", )
-                        navController.popBackStack()
-                        gameZoneViewModel.clearPve()
-                    }
-                }
-                // Toast.makeText(context, "Position is $colume", Toast.LENGTH_SHORT).show()
-            }
-        )
-
         RopeElement(
             modifier = Modifier.constrainAs(containerShow_ref) {
-            top.linkTo(parent.top)
+                top.linkTo(parent.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             },
-            idContainer = gameZoneViewModel.currentColorContainer!!
+            idContainer = gameZoneViewModel.currentColorContainerPVP!!
         )
 
         Image(
@@ -104,13 +74,38 @@ private fun _PVE_Mode(
                 }
                 .clickable { navController.popBackStack() }
         )
+        GridSystemEl(
+            elements = gameZoneViewModel.gameContainerPVP,
+            modifier = Modifier.constrainAs(gameZone_ref) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom, margin = 40.dp)
+            },
+            onClickVertical = { colume ->
+                if (!gameZoneViewModel.isFinishGamePVP()) {
+                    gameZoneViewModel.addContainerPvp(colume, gameZoneViewModel.currentColorContainerPVP!!)
+                    gameZoneViewModel.currentColorContainerPVP = gameZoneViewModel.generateRandomContainer()
+                    gameZoneViewModel.generateNeutralBoxPVP()
+                } else {
+                    if (gameZoneViewModel.userIsWin(true)) {
+                        Log.e("_PVP_Mode", "user is win: ", )
+                        isOpen = true
+                    } else {
+                        Log.e("_PVP_Mode", "user is lost: ", )
+                        navController.popBackStack()
+                        gameZoneViewModel.clearPvp()
+                    }
 
+                }
+            }
+        )
     }
+
     if (isOpen) {
         AlertWin() {
             navController.popBackStack()
-            gameZoneViewModel.clearPve()
+            gameZoneViewModel.clearPvp()
         }
     }
-
 }
+
